@@ -18,7 +18,7 @@ pipeline{
 		stage('Build') {
 
 			steps {
-				sh 'docker build -t roshanitft/apache_docker:latest .'
+				sh 'docker build -t roshanitft/apache2:latest .'
 			}
 		}
 
@@ -32,7 +32,7 @@ pipeline{
 		stage('Push') {
 
 			steps {
-				sh 'docker push roshanitft/apache_docker:latest'
+				sh 'docker push roshanitft/apache2:latest'
 			}
 		}
 	}
