@@ -1,0 +1,46 @@
+pipeline{
+
+	agent any
+
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('hubdockertft')
+	}
+
+	stages {
+	    
+	    stage('gitclone') {
+
+			steps {
+				git 'https://github.com/Roshanitft/jenkins_dockerfile.git'
+			}
+		}
+
+		stage('Build') {
+
+			steps {
+				sh 'docker build -t roshanitft/apache_docker:latest .'
+			}
+		}
+
+		stage('Login') {
+
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
+
+		stage('Push') {
+
+			steps {
+				sh 'docker push roshanitft/apache_docker:latest'
+			}
+		}
+	}
+
+	post {
+		always {
+			sh 'docker logout'
+		}
+	}
+
+}
